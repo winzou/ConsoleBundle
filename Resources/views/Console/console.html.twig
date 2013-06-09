@@ -43,5 +43,20 @@
             });
             {% endautoescape %}
         });
+        /*function consoleResize() {
+            var totalHeight = 0;
+            $("body").children().each(function(){
+                if ($(this).attr('id') != 'coresphere_consolebundle_console') {
+                    totalHeight = totalHeight + $(this).outerHeight();
+                    console.log($(this).html());
+                }
+            });
+            alert(totalHeight);
+        }
+        consoleResize();
+        /*$("#coresphere_consolebundle_console").height($(window).height());
+        $(window).resize(function(){
+            $("#coresphere_consolebundle_console").height($(window).height());
+        });*/
     </script>
 {% endblock %}

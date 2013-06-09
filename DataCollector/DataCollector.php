@@ -25,6 +25,6 @@ class DataCollector extends DataCollectorBase
 
     public function getName()
     {
-        return 'coresphere_console';
+        return 'web_console';
     }
 }
