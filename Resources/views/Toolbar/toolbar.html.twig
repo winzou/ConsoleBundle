@@ -1,15 +1,38 @@
-{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% extends app.request.isXmlHttpRequest ? 'WebProfilerBundle:Profiler:ajax_layout.html.twig' : 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
     {% set icon %}
-        <a href="{{ path('console') }}" class="coresphere_console_popover">
-            <img width="13" height="28" alt="Console" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
-bWFnZVJlYWR5ccllPAAAAG5JREFUeNpi/P//PwM1ARMDlcGogZQDlhMnTlAtmi0sLBip70IkNiOF
-rsMwkKGiouL/CE42Bw4cAGOqGejg4AA3mGouRDaYnGSD1YXoFhCyhIVYm4l16UguvmB5keLCAVTk
-UNOFjKO13ggwECDAAAMNHZ7ErsJjAAAAAElFTkSuQmCC"/>
-        </a>
+        <img width="20" height="28" alt="{{ 'coresphere_console.headline.index'|trans }}" title="{{ 'coresphere_console.headline.index'|trans }}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAG5JREFUeNpi/P//PwM1ARMDlcGogZQDlhMnTlAtmi0sLBip70IkNiOFrsMwkKGiouL/CE42Bw4cAGOqGejg4AA3mGouRDaYnGSD1YXoFhCyhIVYm4l16UguvmB5keLCAVTkUNOFjKO13ggwECDAAAMNHZ7ErsJjAAAAAElFTkSuQmCC" />
     {% endset %}
-    {% set text %}Console{% endset %}
+    {#% set text %}Console{% endset %#}
 
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': false } %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+{% endblock %}
+
+{% block menu %}
+<span class="label">
+    <span class="icon"><img alt="{{ 'coresphere_console.headline.index'|trans }}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAG5JREFUeNpi/P//PwM1ARMDlcGogZQDlhMnTlAtmi0sLBip70IkNiOFrsMwkKGiouL/CE42Bw4cAGOqGejg4AA3mGouRDaYnGSD1YXoFhCyhIVYm4l16UguvmB5keLCAVTkUNOFjKO13ggwECDAAAMNHZ7ErsJjAAAAAElFTkSuQmCC" /></span>
+    <strong>{{ 'coresphere_console.headline.index'|trans }}</strong>
+</span>
+{% endblock %}
+
+{% block panel %}
+        {{ render(controller('CoreSphereConsoleBundle:Console:console', {
+            'token': token,
+            'panel': 'console',
+        })) }}
+    {#% if 'explain' == page %}
+        {{ render(controller('DoctrineBundle:Profiler:explain', {
+            'token': token,
+            'panel': 'db',
+            'connectionName': app.request.query.get('connection'),
+            'query': app.request.query.get('query')
+        })) }}
+    {% else %}
+        {{ block('queries') }}
+    {% endif %#}
+    {#
+            'connectionName': app.request.query.get('connection'),
+            'query': app.request.query.get('query')
+#}
 {% endblock %}
